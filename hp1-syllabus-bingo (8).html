@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHL5103H Health Promotion 1 — Syllabus Bingo — Fall 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#002A5C; --navy-2:#0B3D7A; --ink:#1B2430; --muted:#5A6573;
+    --paper:#F6F7F9; --white:#FFFFFF; --line:#D9DEE5;
+    --solo:#2E7D32; --solo-bg:#E7F3E8;
+    --partner:#1565C0; --partner-bg:#E5EEF9;
+    --action:#F9A825; --action-bg:#FFF6DC;
+    --gold:#C9A227; --red:#B3261E;
+    --r:8px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:15px;line-height:1.4}
+  button{font:inherit;cursor:pointer}
+  input,textarea{font:inherit}
+  a{color:var(--navy)}
+  .hidden{display:none !important}
+
+  /* Header */
+  header{background:var(--navy);color:#fff;padding:12px 18px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+  header h1{margin:0;font-size:17px;font-weight:700;letter-spacing:.01em}
+  header h1 small{display:block;font-weight:400;font-size:12px;opacity:.85;margin-top:2px}
+  .hdr-right{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .timer{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:var(--r);padding:6px 12px;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;min-width:110px;text-align:center}
+  .timer.warn{background:var(--red);border-color:var(--red)}
+  .timer small{display:block;font-size:10px;font-weight:400;opacity:.85}
+  .btn{border:1px solid var(--line);background:var(--white);color:var(--ink);border-radius:var(--r);padding:8px 14px;font-weight:700}
+  .btn:hover{background:#eef1f5}
+  .btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .btn.primary:hover{background:var(--navy-2)}
+  .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
+  .btn.ghost:hover{background:rgba(255,255,255,.12)}
+  .btn.danger{background:var(--red);color:#fff;border-color:var(--red)}
+  .btn:focus-visible,.square:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--action);outline-offset:2px}
+  .me{font-size:13px;opacity:.9}
+
+  /* Join */
+  #join{max-width:520px;margin:48px auto;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:28px}
+  #join h2{margin:0 0 6px;font-size:22px}
+  #join p{margin:0 0 16px;color:var(--muted)}
+  #join .row{display:flex;gap:8px}
+  #join input{flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:18px;font-size:13px}
+  .legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .legend .l-solo::before{background:var(--solo)} .legend .l-partner::before{background:var(--partner)} .legend .l-action::before{background:var(--action)}
+
+  /* Layout */
+  main{display:grid;grid-template-columns:1fr 300px;gap:16px;padding:16px;max-width:1500px;margin:0 auto}
+  @media (max-width:980px){main{grid-template-columns:1fr}}
+  .rules{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;font-size:13px;color:var(--muted);margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+  .rules b{color:var(--ink)}
+
+  /* Board — flip cards */
+  .board{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  @media (max-width:1100px){.board{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:760px){.board{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:460px){.board{grid-template-columns:repeat(2,1fr)}}
+  .square{position:relative;height:290px;perspective:1200px;background:none;border:0;padding:0;text-align:left;font:inherit;color:inherit}
+  .square.solo{--c:var(--solo);--bg:var(--solo-bg)} .square.partner{--c:var(--partner);--bg:var(--partner-bg)} .square.action{--c:var(--action);--bg:var(--action-bg)}
+  .flip{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+  .square.flipped .flip{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;border:1px solid var(--line);border-top:6px solid var(--c);background:var(--white);padding:10px 11px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+  .front{justify-content:center;align-items:flex-start;background:var(--bg)}
+  .back{transform:rotateY(180deg);background:var(--white)}
+  .front .tag{font-size:9px;font-weight:700;color:var(--c);letter-spacing:.06em;text-transform:uppercase}
+  .front .id{font-size:11px;font-weight:700;color:var(--muted)}
+  .front .ttl{font-size:17px;font-weight:700;line-height:1.2;color:var(--ink)}
+  .front .hint{position:absolute;bottom:8px;right:10px;font-size:10px;color:var(--muted)}
+  .back .id{font-size:10px;font-weight:700;color:var(--c);letter-spacing:.06em;text-transform:uppercase}
+  .back .q{flex:1;color:var(--ink);line-height:1.32;overflow:auto;font-size:13.5px}
+  .back .q.len-m{font-size:12.5px} .back .q.len-l{font-size:11.6px} .back .q.len-xl{font-size:10.8px;line-height:1.28}
+  .back .ans{align-self:stretch;margin-top:4px;background:var(--c);color:#fff;border:0;border-radius:6px;padding:6px 8px;font-size:12px;font-weight:700}
+  .square.action .back .ans{color:var(--ink)}
+  .square.done .front,.square.done .back{border-color:var(--c)}
+  .square.done .front{background:var(--c)}
+  .square.done .front .tag,.square.done .front .id,.square.done .front .ttl,.square.done .front .hint{color:#fff}
+  .square.action.done .front .tag,.square.action.done .front .id,.square.action.done .front .ttl,.square.action.done .front .hint{color:var(--ink)}
+  .square.done .front::after{content:"✓";position:absolute;right:10px;top:8px;font-size:26px;font-weight:700;color:#fff}
+  .square.action.done .front::after{color:var(--ink)}
+  .star{position:absolute;top:8px;right:10px;color:var(--gold);font-size:16px;line-height:1}
+  .square.done .front .star{display:none}
+  .square:hover .flip{transform:translateY(-2px)} .square.flipped:hover .flip{transform:rotateY(180deg) translateY(-2px)}
+  @media (prefers-reduced-motion:reduce){.flip{transition:none}}
+
+  /* Side */
+  aside .card{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+  aside h3{margin:0 0 10px;font-size:15px}
+  .podium{display:flex;gap:8px;align-items:flex-end;min-height:110px}
+  .podium .p{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:var(--r) var(--r) 0 0;text-align:center;padding:8px 4px;font-size:12px;font-weight:700;overflow-wrap:anywhere}
+  .podium .p .n{display:block;font-size:20px;margin-bottom:2px}
+  .podium .p.p1{height:105px;background:#FFF3C4} .podium .p.p2{height:85px} .podium .p.p3{height:70px}
+  .podium .p.empty{color:var(--muted);font-weight:400}
+  .lb{list-style:none;margin:0;padding:0;font-size:13px;max-height:420px;overflow:auto}
+  .lb li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+  .lb li.me{font-weight:700}
+  .lb .bar{flex:1;height:8px;background:var(--paper);border-radius:4px;overflow:hidden;align-self:center}
+  .lb .bar i{display:block;height:100%;background:var(--navy)}
+  .lb .cnt{font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+
+  /* Modal */
+  .overlay{position:fixed;inset:0;background:rgba(15,25,40,.55);display:flex;align-items:center;justify-content:center;padding:14px;z-index:50}
+  .modal{background:var(--white);border-radius:12px;width:min(640px,100%);max-height:92vh;overflow:auto;border-top:8px solid var(--c)}
+  .modal.solo{--c:var(--solo)} .modal.partner{--c:var(--partner)} .modal.action{--c:var(--action)}
+  .modal .in{padding:20px 22px}
+  .modal .tag{color:var(--c);font-weight:700;font-size:12px}
+  .modal h2{margin:4px 0 8px;font-size:19px}
+  .modal .q{margin:0 0 14px;color:var(--ink)}
+  .modal .adv{background:#FFF8E1;border:1px solid #F1DFA0;border-radius:var(--r);padding:8px 10px;font-size:13px;margin-bottom:12px}
+  label{display:block;font-weight:700;font-size:13px;margin:12px 0 4px}
+  .modal input,.modal textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:var(--r)}
+  .modal textarea{min-height:110px;resize:vertical}
+  .wc{font-size:12px;color:var(--muted);text-align:right;margin-top:4px}
+  .wc.over{color:var(--red);font-weight:700}
+  .modal .acts{display:flex;justify-content:space-between;gap:8px;margin-top:16px;flex-wrap:wrap}
+  .modal .err{color:var(--red);font-size:13px;margin-top:8px}
+
+  /* Toast */
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:var(--r);font-weight:700;z-index:60;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  .toast.win{background:var(--gold);color:var(--ink);font-size:18px}
+
+  /* Dashboard */
+  #dash{max-width:1500px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:980px){#dash{grid-template-columns:1fr}}
+  #dash .card{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+  #dash h3{margin:0 0 10px;font-size:15px}
+  #dash .full{grid-column:1/-1}
+  .stats{display:flex;gap:18px;flex-wrap:wrap;font-size:14px}
+  .stats b{font-size:22px;display:block}
+  .filters{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin-bottom:10px}
+  .heat{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  .heat .h{border-radius:6px;padding:6px;font-size:11px;min-height:64px;border:1px solid var(--line);color:var(--ink);position:relative}
+  .heat .h b{display:block;font-size:14px}
+  .heat .h.dim{opacity:.25}
+  .feed{list-style:none;margin:0;padding:0;font-size:13px;max-height:520px;overflow:auto}
+  .feed li{padding:8px 0;border-bottom:1px solid var(--line)}
+  .feed .who{font-weight:700}
+  .feed .sq{display:inline-block;padding:1px 6px;border-radius:4px;color:#fff;font-size:11px;font-weight:700;margin-right:6px}
+  .feed .sq.solo{background:var(--solo)} .feed .sq.partner{background:var(--partner)} .feed .sq.action{background:var(--action);color:var(--ink)}
+  .feed .ans{color:var(--muted);white-space:pre-wrap}
+  .feed .t{color:var(--muted);font-size:11px;float:right}
+  .key{font-size:12px;color:var(--muted);margin-top:6px}
+  .dash-acts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CHL5103H Health Promotion 1 — Syllabus Bingo<small>Fall 2026 (syllabus dated 26/09/05) · Dr. Francisco Ibáñez-Carrasco · Mondays 10–1, SS 1069</small></h1>
+  <div class="hdr-right">
+    <div class="timer" id="timer"><span id="timerText">60:00</span><small id="timerSub">waiting for instructor</small></div>
+    <span class="me" id="meName"></span>
+    <button class="btn ghost" id="btnDash">Instructor</button>
+    <button class="btn ghost hidden" id="btnBack">Back to board</button>
+  </div>
+</header>
+
+<!-- Join -->
+<section id="join">
+  <h2>Join the game</h2>
+  <p>Type your first name and last initial. No account needed. The board, timer, and leaderboard are shared live with the whole class.</p>
+  <div class="row">
+    <input id="nameInput" placeholder="e.g., Priya K." maxlength="40" autocomplete="off">
+    <button class="btn primary" id="joinBtn">Join</button>
+  </div>
+  <div class="legend">
+    <span class="l-solo">Solo — You + the Syllabus</span>
+    <span class="l-partner">Partner — Borrow a Brain</span>
+    <span class="l-action">Partner + Action — Do Something With It</span>
+    <span>★ Close-reading square — do it with a classmate you haven't met yet</span>
+  </div>
+</section>
+
+<!-- Game -->
+<main id="game" class="hidden">
+  <section>
+    <div class="rules">
+      <span><b>How to win:</b> complete any full row, column, or diagonal. First three players to do it take the podium.</span>
+      <span><b>Tap a card</b> to flip it and read the challenge, then press <b>Answer</b>.</span>
+      <span id="myCount"></span>
+    </div>
+    <div class="board" id="board" aria-label="Bingo board"></div>
+  </section>
+  <aside>
+    <div class="card">
+      <h3>Winner's podium</h3>
+      <div class="podium" id="podium"></div>
+    </div>
+    <div class="card">
+      <h3>Class leaderboard</h3>
+      <ul class="lb" id="lb"></ul>
+    </div>
+  </aside>
+</main>
+
+<!-- Dashboard -->
+<section id="dash" class="hidden">
+  <div class="card full">
+    <div class="dash-acts">
+      <button class="btn primary" id="startTimer">Start 60-minute timer</button>
+      <button class="btn" id="stopTimer">Stop timer</button>
+      <button class="btn" id="exportCsv">Export all responses (CSV)</button>
+      <button class="btn danger" id="resetGame">Reset game (clears all players)</button>
+    </div>
+    <div class="stats">
+      <span><b id="stPlayers">0</b>players joined</span>
+      <span><b id="stAnswers">0</b>squares completed</span>
+      <span><b id="stWinners">0</b>bingos</span>
+      <span><b id="stAvg">0</b>avg squares per player</span>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Completion heatmap</h3>
+    <div class="filters">
+      <label style="margin:0;font-weight:400"><input type="checkbox" id="fAdv"> Show only ★ advanced squares</label>
+      <label style="margin:0;font-weight:400"><input type="checkbox" id="fBase"> Show only baseline (S1–S5)</label>
+    </div>
+    <div class="heat" id="heat"></div>
+    <p class="key">Hover a square for its answer key. Shade = share of joined players who completed it.</p>
+  </div>
+  <div class="card">
+    <h3>Live answer feed</h3>
+    <ul class="feed" id="feed"></ul>
+  </div>
+</section>
+
+<div id="modalHost"></div>
+<div id="toastHost"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+/* ---------------- Firebase ---------------- */
+const firebaseConfig = {
+  apiKey: "AIzaSyCQoybB7AdYYx1ue-LtNODwAmm7CdYkm0w",
+  authDomain: "bingohp1.firebaseapp.com",
+  databaseURL: "https://bingohp1-default-rtdb.firebaseio.com",
+  projectId: "bingohp1",
+  storageBucket: "bingohp1.firebasestorage.app",
+  messagingSenderId: "397455537811",
+  appId: "1:397455537811:web:79c8e1fe390aba985cff66"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const GAME = "fall2026";               // change to start a fresh game namespace
+const root = db.ref("games/" + GAME);
+const INSTRUCTOR_CODE = "HP1-2026";
+const TIMER_MS = 60 * 60 * 1000;
+
+/* ---------------- Questions ---------------- */
+// type: solo | partner | action ; adv: ★ close-reading ; base: baseline self-assessment ; limit: word limit ; classmate: needs classmate name
+const Q = [
+ // SOLO — You + the Syllabus
+ {id:"S1",type:"solo",base:true,limit:50,title:"Your Big Question",q:"What is one Big Question about Health Promotion you would genuinely like to explore this term? Not “What will be on the exam?” Maximum 50 words."},
+ {id:"S2",type:"solo",base:true,title:"Scoping Review: Been There?",q:"How prepared would you feel to conduct a scoping review today? Rate yourself 1–5. Then tell us briefly: have you ever done one, helped with one, or used one?"},
+ {id:"S3",type:"solo",base:true,title:"Program Planning: Your Starting Point",q:"How confident are you designing a health promotion program? Rate yourself 1–5 and name one program-planning skill or tool you already know or have used."},
+ {id:"S4",type:"solo",base:true,title:"Logic Models: Friend or Stranger?",q:"Have you ever created, interpreted, or worked with a logic model? Yes / Sort of / No idea yet. If yes or sort of, tell us where. The course will return to logic models in Assignments 3 and 4."},
+ {id:"S5",type:"solo",base:true,limit:50,title:"What Counts as Evidence?",q:"Peek ahead to Week 4. The syllabus asks whether a meme, gossip, a TikTok comment, or a community meeting can count as evidence. Pick one and give your first instinct: yes, no, or it depends—and why? Maximum 50 words."},
+ {id:"S6",type:"solo",title:"Graduate School ≠ Just Passing",q:"Find the syllabus statement about graduate-level expectations. Name two things expected of you besides getting the answer right or earning a passing grade.",key:"Academic professionalism, clarity of written communication, ethical use of research tools incl. generative AI (A4 Policy Reminder)."},
+ {id:"S7",type:"solo",title:"Six References ≠ Six Studies",q:"Assignment 1 requires at least 6 scholarly references; Assignment 2 requires 12. But Assignment 2 says something different about the number of sources in the actual scoping review. What does it say, and what do you think the distinction means?",key:"No set minimum for scoping sources; must be comprehensive, methodologically sound, clearly justified. Cited references ≠ sources screened."},
+ {id:"S8",type:"solo",title:"Six Things, One ZIP",q:"Find the Critical Engagement Portfolio. What three pairs of entries make up the six? Which pair requires you to engage directly with another student's thinking?",key:"2 Weekly Preparation Reflections, 2 Microlearning Reflections, 2 Responses to Classmates; the peer responses."},
+ {id:"S9",type:"solo",limit:50,title:"OCAP® Is Not Just Four Letters",q:"Find OCAP® in Week 5. Spell it out, then explain in Plain English what it changes about who controls Indigenous community data. Maximum 50 words.",key:"Ownership, Control, Access, Possession — communities, not researchers or institutions, govern their data."},
+ {id:"S10",type:"solo",title:"Read Past the Land Acknowledgment",q:"Read the whole Acknowledgment of Territory, not just the nation names. What does the instructor add after the territorial acknowledgment, and what broader kind of displacement does it ask us to notice?",key:"Acknowledges the humanity and suffering of those displaced by environmental deterioration, political and military conflict, and poverty beyond endurance."},
+ {id:"S11",type:"solo",title:"Follow the Points",q:"Only one component of Assignment 4 gets 4 points while the other scored components get 3. Which one? What does that suggest deserves particular attention in your final program plan?",key:"Evaluation Plan (4 pts) — build evaluation in from Day One."},
+ {id:"S12",type:"solo",adv:true,classmate:true,title:"Professor Sighting",q:"The instructor is hiding in the author list of a required Week 1 reading. Find him. Give the article, journal, and year. Then record the name of a classmate you hadn't met before today who helped you verify it.",key:"Iyamu et al. (2025), JMIR Public Health and Surveillance, Week 1."},
+ // PARTNER — Borrow a Brain
+ {id:"P1",type:"partner",classmate:true,limit:50,title:"Which Assignment Makes You Nervous?",q:"With someone you haven't met, scan the five assignments. Ask which one makes them most nervous—and what specific requirement causes the anxiety. Record their name + answer."},
+ {id:"P2",type:"partner",classmate:true,limit:50,title:"Pick a Fight (an Academic One)",q:"Scan the semester's Big Questions together. Which one would you most like to hear the class disagree about? Record the question and why you chose it."},
+ {id:"P3",type:"partner",classmate:true,limit:50,title:"What Would You Actually Open?",q:"Scan the weekly Provocation column. Find one podcast, video, text, or contemporary issue your partner would actually open voluntarily. Record which one and what caught their attention."},
+ {id:"P4",type:"partner",classmate:true,limit:50,title:"Could We Build a Semester Around This?",q:"Look together at the Ideas for HP1 Topics. Pick one topic that could plausibly carry you from a scoping review into a health-promotion program plan. Record the topic and your partner's reason. The syllabus explicitly encourages students to carry a topic forward across assignments."},
+ {id:"P5",type:"partner",classmate:true,limit:50,title:"AI Gets a Second Opinion, Not the First",q:"Find what a TA must do before using AI to support assignment review. Together explain the rule in one sentence.",key:"Read the work and make an independent initial assessment with the instructions and rubric first."},
+ {id:"P6",type:"partner",classmate:true,limit:50,title:"Does AI Grade You? Spoiler: No.",q:"Together find three things AI may do when supporting review and two things it may NOT do. Finish this sentence: “The grade is assigned by ______.”",key:"May: check structure, flag missing refs/formatting, identify areas to develop, support rubric consistency. May not: assign grades, require students to use AI, replace TA/instructor judgment. “…a human / the TA.”"},
+ {id:"P7",type:"partner",classmate:true,limit:50,title:"Tutorial Detective, Part I",q:"With your partner, find the three tutorial dates and times on the Contact Information page. Record all three. Keep them handy; another square may have a small surprise for you.",key:"Oct 20, Nov 3, Dec 1 — noon to 1 PM."},
+ {id:"P8",type:"partner",adv:true,classmate:true,limit:50,title:"Tutorial Detective, Part II: Uh-oh...",q:"Now compare those dates with the Course Timeline at a Glance. They don't match. Record both sets, then decide together: Which would you trust right now, and what would you do to verify it?",key:"Contact page Oct 20 / Nov 3 / Dec 1 vs Timeline Oct 26 / Nov 16 / Nov 30."},
+ {id:"P9",type:"partner",classmate:true,limit:50,title:"Portfolio: Words vs. Minutes",q:"Find the minimum length for a written portfolio entry and an audio/video entry. Record both. Then ask your partner which format they would rather use and why.",key:"200 words / 5 minutes."},
+ {id:"P10",type:"partner",classmate:true,limit:50,title:"What Do I Actually Have to Prepare?",q:"Weekly preparation is supposed to take about 30–45 minutes. Together identify the two required material types and the “choose one” category. Don't accidentally include the optional material.",key:"One core scholarly reading; one Indigenous or BIPOC perspective; choose one of case, podcast, policy brief, news article."},
+ {id:"P11",type:"partner",classmate:true,limit:50,title:"“Academic Busy-ness”",q:"Yes, the syllabus actually says “Academic busy-ness.” Find it. What does the syllabus say it is not grounds for, and what circumstances can lead someone to request that consideration?",key:"Not grounds for informal accommodation; illness, injury, emergency, or other unexpected incident."},
+ {id:"P12",type:"partner",classmate:true,limit:50,title:"Your TA Is Also an Author",q:"One TA's name appears again in the Week 9 materials. Who is it, and what health-promotion issue is their piece about?",key:"Kyara Liu — gender-based violence among people with disabilities (SRH impacts across the life course)."},
+ // PARTNER + ACTION — Do Something With It
+ {id:"A1",type:"action",classmate:true,title:"Make a Scoping Question",q:"Choose one topic from Ideas for HP1 Topics. Together draft a 1–2 sentence scoping-review question in the style Assignment 1 asks for. Don't solve the problem—frame a question worth investigating."},
+ {id:"A2",type:"action",classmate:true,title:"SMART, Not Vague",q:"Together write one SMART objective for a health-promotion program addressing loneliness among older adults. Assignment 3 eventually asks for 2–3; today you only owe us one good one."},
+ {id:"A3",type:"action",classmate:true,limit:50,title:"Where Are You Starting From?",q:"Read all five Course Learning Outcomes together. Each choose: (1) the one you already feel strongest in, and (2) the one you most need to develop. Record your partner's two numbers and their explanation in ≤50 words."},
+ {id:"A4",type:"action",classmate:true,limit:30,title:"Difficult Doesn't Mean Avoid It",q:"Together read the Course Content Advisory. In 30 words or fewer, explain what the syllabus says the goal is when the course engages with difficult or potentially distressing material.",key:"Not to avoid difficult realities but to engage with them thoughtfully, ethically, and compassionately."},
+ {id:"A5",type:"action",classmate:true,limit:50,title:"Explain It to a 9-Year-Old",q:"Together choose one TEXT reading in the syllabus that catches your eye—not a video or podcast. Open it and read the abstract. You may ask AI to help you understand it, but you make the final translation. Explain the main idea in Plain English for a curious 9-year-old. Maximum 50 words."},
+ {id:"A6",type:"action",classmate:true,title:"Three Appendices Walk Into a Scoping Review...",q:"Find the three required appendices for Assignment 2. Record the letter/name of each and, in a few words, what belongs there.",key:"A – Inclusion/Exclusion Criteria Table; B – PRISMA Diagram + Summary Table; C – Data Charting Table."},
+ {id:"A7",type:"action",classmate:true,title:"The $30 Late-Submission Problem",q:"Your partner submits Assignment 2 two days late without prior permission. It is worth 30 points. Use the late policy to calculate the maximum score still possible. Show your tiny bit of math.",key:"2 days late = 10% → 30 − 3 = 27 max."},
+ {id:"A8",type:"action",adv:true,classmate:true,title:"The Syllabus Disagrees With Itself",q:"Assignment 1 gives two different instructions about where the AI acknowledgment belongs. With someone you haven't met, find both. Then write a one-sentence clarification question you could actually email the instructor.",key:"“Must appear at the beginning, before Section 1” vs rubric checks “at the end or in a footnote.”"},
+ {id:"A9",type:"action",classmate:true,limit:50,title:"“Wait, THAT Is Health Promotion?”",q:"Together scan Weeks 1–12. Find one topic, problem, or provocation that one of you did not expect to encounter in a Health Promotion course. Record the week and explain in ≤50 words why you now think it belongs."},
+ {id:"A10",type:"action",classmate:true,title:"Five-Word Health Promoter",q:"Week 12 asks: “What kind of health promoter do you want to become?” Each of you gets five words. Record your partner's five-word answer. No sixth-word loopholes."},
+ {id:"A11",type:"action",classmate:true,limit:50,title:"Judge a Reading by Its Title (Then Check)",q:"Find a 2026 reading in the weekly materials. Before opening it, use its title and the syllabus description to predict why it belongs in HP1. Then open it. Were you close? Record the author, week, and your verdict in ≤50 words. Week 5 offers several 2026 possibilities."},
+ {id:"A12",type:"action",adv:true,classmate:true,title:"Another Syllabus Plot Twist",q:"The Weekly Preparation section and Assignment 5 give different word counts for Responses to Classmates. With someone you haven't met, find both numbers. Which minimum would you follow until the instructor clarifies it, and why?",key:"~300 words (Weekly Preparation) vs at least 200 words (Assignment 5)."}
+];
+const TYPE_LABEL = {solo:"Solo — You + the Syllabus", partner:"Partner — Borrow a Brain", action:"Partner + Action — Do Something With It"};
+const TYPE_SHORT = {solo:"Solo", partner:"Partner", action:"Partner + Action"};
+
+/* ---------------- Scrambled board (same for everyone) ---------------- */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function buildLayout(){
+  let seed=20260914;
+  for(;;){
+    const r=rng(seed++), idx=[...Array(36).keys()];
+    for(let i=35;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}
+    if(LINES.every(line=>new Set(line.map(p=>Q[idx[p]].type)).size>1)) return idx;
+  }
+}
+const LINES=(()=>{const L=[];for(let r=0;r<6;r++)L.push([0,1,2,3,4,5].map(c=>r*6+c));for(let c=0;c<6;c++)L.push([0,1,2,3,4,5].map(r=>r*6+c));L.push([0,7,14,21,28,35]);L.push([5,10,15,20,25,30]);return L})();
+const LAYOUT=buildLayout(); // LAYOUT[pos] = question index
+
+/* ---------------- State ---------------- */
+let me={id:null,name:null}, myAnswers={}, players={}, winners=[], timerEnd=null, feedData=[], iAmWinner=false;
+const flipped=new Set(); // which cards are turned over
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const words=s=>(s||"").trim().split(/\s+/).filter(Boolean).length;
+function store(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function toast(msg,win){const t=document.createElement("div");t.className="toast"+(win?" win":"");t.textContent=msg;$("#toastHost").appendChild(t);setTimeout(()=>t.remove(),win?6000:2600)}
+
+/* ---------------- Join ---------------- */
+$("#joinBtn").onclick=join;
+$("#nameInput").onkeydown=e=>{if(e.key==="Enter")join()};
+function join(){
+  const name=$("#nameInput").value.trim();
+  if(!name){$("#nameInput").focus();return}
+  me.id=load("hp1bingo_"+GAME+"_id")||("p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6));
+  me.name=name;
+  store("hp1bingo_"+GAME+"_id",me.id); store("hp1bingo_"+GAME+"_name",name);
+  root.child("players/"+me.id).update({name,joined:firebase.database.ServerValue.TIMESTAMP});
+  startGame();
+}
+(function autoJoin(){const id=load("hp1bingo_"+GAME+"_id"),name=load("hp1bingo_"+GAME+"_name");if(id&&name){me={id,name};root.child("players/"+id+"/name").set(name);startGame()}})();
+
+function startGame(){
+  $("#join").classList.add("hidden");$("#game").classList.remove("hidden");
+  $("#meName").textContent="Playing as "+me.name;
+  renderBoard();
+  root.child("players/"+me.id+"/answers").on("value",s=>{myAnswers=s.val()||{};renderBoard();checkWin()});
+  root.child("players").on("value",s=>{players=s.val()||{};renderLeaderboard();renderDash()});
+  root.child("winners").on("value",s=>{winners=s.val()||[];renderPodium();renderDash()});
+  root.child("timerEnd").on("value",s=>{timerEnd=s.val();});
+  root.child("feed").limitToLast(300).on("value",s=>{feedData=[];s.forEach(c=>{feedData.push(c.val())});renderDash()});
+}
+
+/* ---------------- Board ---------------- */
+function lenClass(t){const n=words(t);return n<=30?"":n<=45?"len-m":n<=60?"len-l":"len-xl"}
+function renderBoard(){
+  const b=$("#board");b.innerHTML="";
+  LAYOUT.forEach(qi=>{
+    const q=Q[qi], done=!!myAnswers[q.id];
+    const el=document.createElement("div");
+    el.className="square "+q.type+(done?" done":"")+(flipped.has(q.id)?" flipped":"");
+    el.setAttribute("role","button");el.tabIndex=0;
+    el.setAttribute("aria-label",q.id+" "+q.title+(done?" (completed)":"")+". Press to reveal the challenge.");
+    el.innerHTML=`<div class="flip">
+      <div class="face front"><span class="tag">${esc(TYPE_SHORT[q.type])}</span><span class="id">${esc(q.id)}</span><span class="ttl">${esc(q.title)}</span>${q.adv?'<span class="star" title="Close-reading square: do this with a classmate you haven\'t met yet.">★</span>':""}<span class="hint">tap to reveal</span></div>
+      <div class="face back"><span class="id">${esc(q.id)}${q.adv?" · ★ close-reading":""}</span><div class="q ${lenClass(q.q)}">${esc(q.q)}</div><button class="ans" type="button">${done?"Edit answer":"Answer"}</button></div>
+    </div>`;
+    const toggle=()=>{if(flipped.has(q.id))flipped.delete(q.id);else flipped.add(q.id);el.classList.toggle("flipped")};
+    el.onclick=e=>{if(e.target.closest(".ans")){openModal(q);return}toggle()};
+    el.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}};
+    b.appendChild(el);
+  });
+  const n=Object.keys(myAnswers).length;
+  $("#myCount").innerHTML=`<b>Your progress:</b> ${n} / 36`;
+  fitText();
+}
+// Shrink challenge text step by step until it fits inside its card (never below 9px).
+function fitText(){
+  document.querySelectorAll(".back .q").forEach(el=>{
+    el.style.fontSize="";let fs=parseFloat(getComputedStyle(el).fontSize);
+    let guard=0;while(el.scrollHeight>el.clientHeight+1&&fs>9&&guard++<20){fs-=0.4;el.style.fontSize=fs+"px"}
+  });
+}
+let rsz;window.addEventListener("resize",()=>{clearTimeout(rsz);rsz=setTimeout(fitText,120)});
+
+/* ---------------- Modal ---------------- */
+function openModal(q){
+  const prev=myAnswers[q.id]||{};
+  const host=$("#modalHost");
+  host.innerHTML=`<div class="overlay" id="ov"><div class="modal ${q.type}" role="dialog" aria-modal="true"><div class="in">
+    <div class="tag">${esc(TYPE_LABEL[q.type])}${q.adv?" · ★ close-reading":""}</div>
+    <h2>${esc(q.id)} — ${esc(q.title)}</h2>
+    <p class="q">${esc(q.q)}</p>
+    ${q.adv?'<div class="adv">★ Close-reading square: do this with a classmate you haven\'t met yet, and record their name.</div>':""}
+    ${q.classmate?`<label for="fClass">Classmate's first name</label><input id="fClass" maxlength="60" value="${esc(prev.classmate||"")}" autocomplete="off">`:""}
+    <label for="fAns">Your answer${q.limit?` (max ${q.limit} words)`:""}</label>
+    <textarea id="fAns">${esc(prev.answer||"")}</textarea>
+    ${q.limit?`<div class="wc" id="wc"></div>`:""}
+    <div class="err" id="err"></div>
+    <div class="acts">
+      <button class="btn" id="mCancel">Cancel</button>
+      <span style="display:flex;gap:8px">${prev.answer?'<button class="btn" id="mClear">Un-mark</button>':""}<button class="btn primary" id="mSave">${prev.answer?"Update answer":"Mark complete"}</button></span>
+    </div>
+  </div></div></div>`;
+  const ans=$("#fAns"), wc=$("#wc");
+  function upd(){if(!wc)return;const n=words(ans.value);wc.textContent=n+" / "+q.limit+" words";wc.classList.toggle("over",n>q.limit)}
+  ans.oninput=upd;upd();
+  $("#mCancel").onclick=close;
+  $("#ov").onclick=e=>{if(e.target.id==="ov")close()};
+  document.onkeydown=e=>{if(e.key==="Escape")close()};
+  if($("#mClear"))$("#mClear").onclick=()=>{root.child(`players/${me.id}/answers/${q.id}`).remove();close()};
+  $("#mSave").onclick=()=>{
+    const a=ans.value.trim(), c=q.classmate?$("#fClass").value.trim():"";
+    if(!a){$("#err").textContent="Type an answer before marking the square complete.";return}
+    if(q.classmate&&!c){$("#err").textContent="This square needs your classmate's first name.";return}
+    const rec={answer:a,classmate:c,ts:firebase.database.ServerValue.TIMESTAMP};
+    root.child(`players/${me.id}/answers/${q.id}`).set(rec);
+    root.child("feed").push({pid:me.id,who:me.name,sq:q.id,type:q.type,classmate:c,answer:a,ts:firebase.database.ServerValue.TIMESTAMP});
+    toast(q.id+" marked complete");
+    close();
+  };
+  ($("#fClass")||ans).focus();
+  function close(){host.innerHTML="";document.onkeydown=null}
+}
+
+/* ---------------- Win detection ---------------- */
+function completedLine(){
+  const done=new Set(Object.keys(myAnswers));
+  for(const line of LINES){if(line.every(p=>done.has(Q[LAYOUT[p]].id)))return line}
+  return null;
+}
+function checkWin(){
+  if(iAmWinner)return;
+  const line=completedLine(); if(!line)return;
+  root.child("winners").transaction(w=>{
+    w=w||[]; if(w.length>=3||w.some(x=>x.id===me.id))return; 
+    w.push({id:me.id,name:me.name,ts:Date.now()}); return w;
+  },(err,committed,snap)=>{
+    const w=(snap&&snap.val())||[]; if(w.some(x=>x.id===me.id)){iAmWinner=true;toast("BINGO! You're on the podium, "+me.name+"!",true)}
+    else if(!iAmWinner){iAmWinner=true;toast("You completed a line — the podium is already full, but nice work!")}
+  });
+}
+
+/* ---------------- Leaderboard + podium ---------------- */
+function renderLeaderboard(){
+  const rows=Object.entries(players).map(([id,p])=>({id,name:p.name||"?",n:Object.keys(p.answers||{}).length})).sort((a,b)=>b.n-a.n||a.name.localeCompare(b.name));
+  $("#lb").innerHTML=rows.length?rows.map(r=>`<li class="${r.id===me.id?"me":""}"><span>${esc(r.name)}</span><span class="bar"><i style="width:${r.n/36*100}%"></i></span><span class="cnt">${r.n}/36</span></li>`).join(""):'<li style="color:var(--muted)">No one has joined yet.</li>';
+}
+function renderPodium(){
+  const order=[1,0,2], medals=["🥇","🥈","🥉"];
+  $("#podium").innerHTML=order.map(i=>{const w=winners[i];return `<div class="p p${i+1} ${w?"":"empty"}"><span class="n">${medals[i]}</span>${w?esc(w.name):"open"}</div>`}).join("");
+}
+
+/* ---------------- Timer ---------------- */
+setInterval(()=>{
+  const t=$("#timer"),tx=$("#timerText"),sub=$("#timerSub");
+  if(!timerEnd){tx.textContent="60:00";sub.textContent="waiting for instructor";t.classList.remove("warn");return}
+  const left=Math.max(0,timerEnd-Date.now()), m=Math.floor(left/60000), s=Math.floor(left%60000/1000);
+  tx.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  sub.textContent=left>0?"time remaining":"time's up";
+  t.classList.toggle("warn",left<5*60*1000);
+},500);
+
+/* ---------------- Instructor dashboard ---------------- */
+let dashOpen=false;
+$("#btnDash").onclick=()=>{
+  const code=prompt("Instructor code:"); if(code!==INSTRUCTOR_CODE){if(code!==null)toast("That code didn't match.");return}
+  dashOpen=true;$("#game").classList.add("hidden");$("#join").classList.add("hidden");$("#dash").classList.remove("hidden");$("#btnDash").classList.add("hidden");$("#btnBack").classList.remove("hidden");
+  if(!me.id){ // instructor opened dashboard without joining: still subscribe
+    root.child("players").on("value",s=>{players=s.val()||{};renderDash()});
+    root.child("winners").on("value",s=>{winners=s.val()||[];renderDash()});
+    root.child("timerEnd").on("value",s=>{timerEnd=s.val()});
+    root.child("feed").limitToLast(300).on("value",s=>{feedData=[];s.forEach(c=>{feedData.push(c.val())});renderDash()});
+  }
+  renderDash();
+};
+$("#btnBack").onclick=()=>{dashOpen=false;$("#dash").classList.add("hidden");$("#btnBack").classList.add("hidden");$("#btnDash").classList.remove("hidden");(me.id?$("#game"):$("#join")).classList.remove("hidden")};
+$("#startTimer").onclick=()=>root.child("timerEnd").set(Date.now()+TIMER_MS);
+$("#stopTimer").onclick=()=>root.child("timerEnd").set(null);
+$("#resetGame").onclick=()=>{if(confirm("Reset the whole game? This deletes every player, answer, winner, and the feed. Export the CSV first if you need it."))root.set(null).then(()=>toast("Game reset"))};
+$("#fAdv").onchange=renderDash;$("#fBase").onchange=renderDash;
+
+function renderDash(){
+  if(!dashOpen)return;
+  const plist=Object.values(players), np=plist.length;
+  const counts={}; let total=0;
+  plist.forEach(p=>Object.keys(p.answers||{}).forEach(k=>{counts[k]=(counts[k]||0)+1;total++}));
+  $("#stPlayers").textContent=np;$("#stAnswers").textContent=total;$("#stWinners").textContent=winners.length;$("#stAvg").textContent=np?(total/np).toFixed(1):"0";
+  const fA=$("#fAdv").checked,fB=$("#fBase").checked;
+  const show=q=>(!fA||q.adv)&&(!fB||q.base);
+  $("#heat").innerHTML=LAYOUT.map(qi=>{const q=Q[qi],c=counts[q.id]||0,pct=np?c/np:0;
+    const col=q.type==="solo"?"46,125,50":q.type==="partner"?"21,101,192":"249,168,37";
+    return `<div class="h ${show(q)?"":"dim"}" style="background:rgba(${col},${(0.08+pct*0.9).toFixed(2)})" title="${esc(q.title)}${q.key?"\nKey: "+esc(q.key):"\nOpen-ended — read the feed"}"><b>${esc(q.id)}${q.adv?" ★":""}</b>${c}/${np}<br><span style="opacity:.75">${esc(q.title)}</span></div>`}).join("");
+  const byId=Object.fromEntries(Q.map(q=>[q.id,q]));
+  $("#feed").innerHTML=feedData.slice().reverse().filter(f=>show(byId[f.sq]||{})).map(f=>`<li><span class="t">${f.ts?new Date(f.ts).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}):""}</span><span class="sq ${f.type}">${esc(f.sq)}</span><span class="who">${esc(f.who)}</span>${f.classmate?` with <b>${esc(f.classmate)}</b>`:""}<div class="ans">${esc(f.answer)}</div></li>`).join("")||'<li style="color:var(--muted)">No answers yet.</li>';
+}
+
+/* ---------------- CSV export ---------------- */
+$("#exportCsv").onclick=()=>{
+  const cols=["player","square #","type","title","question","classmate name","answer","word count","baseline flag","advanced flag","timestamp"];
+  const rows=[cols];
+  const byId=Object.fromEntries(Q.map(q=>[q.id,q]));
+  Object.values(players).forEach(p=>Object.entries(p.answers||{}).forEach(([sq,a])=>{const q=byId[sq]||{};
+    rows.push([p.name,sq,TYPE_SHORT[q.type]||"",q.title||"",q.q||"",a.classmate||"",a.answer||"",words(a.answer),q.base?"yes":"no",q.adv?"yes":"no",a.ts?new Date(a.ts).toISOString():""])}));
+  const csv=rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=u;a.download="hp1-syllabus-bingo-responses-"+new Date().toISOString().slice(0,10)+".csv";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
+};
+</script>
+</body>
+</html>
